@@ -7,6 +7,8 @@ import {styles} from '../styles.js'
 import { OPEN_ROUTE_SERVICE_API_KEY } from '../store/api.js'; // Import the API key from environment variables
 import * as LocationService from '../services/LocationService';
 import Map from '../components/Map';
+import HotelsButton from '../components/HotelsButton.js';
+
 
 export default function MapScreen() {
   
@@ -189,6 +191,23 @@ export default function MapScreen() {
           ))}
         </View>
       )}
+
+       {/* Hotels Button */}
+       <HotelsButton />
+
+        {/* Search results rendering */}
+        {searchResults.length > 0 && (
+          <View>
+            {searchResults.map((result) => (
+              <Text
+                key={result.place_id}
+                onPress={() => handleResultPress(result.place_id)}
+              >
+                {result.description}
+              </Text>
+            ))}
+          </View>
+        )}
     </View>
   );
 }
