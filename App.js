@@ -1,16 +1,22 @@
 // App.js
 import React from 'react';
-import { View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { styles } from './styles';
-import MapScreen from './screens/MapScreen.js';
+import HomeScreen from './screens/HomeScreen.js';
+import  OnBoardScreen from './screens/OnBoardScreen.js';
+import {createStackNavigator} from '@react-navigation/stack';
+
+
+import 'react-native-gesture-handler';
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <NavigationContainer>
-        <MapScreen />
-      </NavigationContainer>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
+};

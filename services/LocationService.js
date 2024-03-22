@@ -15,5 +15,5 @@ export function watchLocation() {
 }
 export async function getCurrentLocation() {
   let { coords } = await Location.getCurrentPositionAsync({});
-  return { latitude: coords.latitude, longitude: coords.longitude };
+  return { latitude: coords.latitude, longitude: coords.longitude};
 }

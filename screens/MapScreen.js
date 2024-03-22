@@ -64,7 +64,6 @@ export default function MapScreen() {
       
     };
     console.log('Sending Marker to Parent:', newMarker);
-
     setMarkers([newMarker]);
     setSelectedMarker(newMarker);
 
