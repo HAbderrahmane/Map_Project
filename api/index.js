@@ -1,6 +1,5 @@
 import axios from "axios";
-
-
+import { X_RapidAPI_Key_Travel } from "../store/api";
 export const getPlacesData = async (bl_lat, bl_lng, tr_lat, tr_lng, type) => {
   try {
     const {
@@ -19,7 +18,7 @@ export const getPlacesData = async (bl_lat, bl_lng, tr_lat, tr_lng, type) => {
           lang: "en_US",
         },
         headers: {
-          "X-RapidAPI-Key": "3e1d35a7d4msh17e37af77a88cf4p1be5dejsn5f61d0482d4c",
+          "X-RapidAPI-Key": X_RapidAPI_Key_Travel,
           "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
         },
       }

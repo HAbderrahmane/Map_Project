@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, Platform, Linking, TouchableOpacity } from 'react-native';
-import { SearchBar, makeStyles } from 'react-native-elements';
-import axios from 'axios';
+
+
 import { styles } from '../styles.js';
-import { OPEN_ROUTE_SERVICE_API_KEY } from '../store/api.js'; // Import the API key from environment variables
 import * as LocationService from '../services/LocationService';
 import Map from '../components/Map';
 
