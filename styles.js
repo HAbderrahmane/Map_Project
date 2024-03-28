@@ -1,9 +1,12 @@
-import { StyleSheet, Platform } from 'react-native';
-
+import { StyleSheet, Platform, StatusBar} from 'react-native';
+const getStatusBarHeight = () => {
+  return Platform.OS === 'android' ? StatusBar.currentHeight : 20; // Default status bar height for iOS is 20
+};
 export const styles = StyleSheet.create({
   container: {
+    backgroundColor:'#fff',
     flex: 1,
-    marginTop: 17,
+    marginTop: getStatusBarHeight(),
   },
   title: {
     fontSize: 20,
@@ -15,20 +18,20 @@ export const styles = StyleSheet.create({
     
   },
   searchBarContainer: {
-    backgroundColor: 'transparent',
+    backgroundColor: '#fff',
     borderTopWidth: 0,
     borderBottomWidth: 0,
     marginBottom: Platform.OS === 'ios' ? 60 : 50,
   },
   searchBarInputContainer: {
-    backgroundColor: '#EDEDED',
+    backgroundColor: '#fff',
   },
   searchResultsContainer: {
     position: 'absolute',
     top: Platform.OS === 'ios' ? 120 : 100,
     left: 10,
     right: 10,
-    backgroundColor: 'white',
+    backgroundColor: '#fff',
     zIndex: 1,
     borderRadius: 5,
     elevation: 3,
@@ -46,9 +49,11 @@ export const styles = StyleSheet.create({
   navigateTextContainer: {
     position: 'absolute',
     bottom: 100,  // Adjust the bottom distance as needed
-    backgroundColor: 'rgba(0, 122, 255, 0.7)',
+    backgroundColor: 'black',
     borderRadius: 5,
     padding: 10,
+    
+    
   },
   navigateText: {
     color: 'white',

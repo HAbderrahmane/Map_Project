@@ -1,20 +1,16 @@
-//MapScreen.js
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, View, Text, Platform, Linking, TouchableOpacity } from 'react-native';
 import { SearchBar, makeStyles } from 'react-native-elements';
 import axios from 'axios';
-import {styles} from '../styles.js'
+import { styles } from '../styles.js';
 import { OPEN_ROUTE_SERVICE_API_KEY } from '../store/api.js'; // Import the API key from environment variables
 import * as LocationService from '../services/LocationService';
 import Map from '../components/Map';
-import HotelsButton from '../components/HotelsButton.js';
 
-
-export default function MapScreen() {
-  
+export default function MapScreen({ marker }) {
   const [location, setLocation] = useState({
-    latitude: 0,
-    longitude: 0,
+    latitude: 43.29763114204085,
+    longitude: 5.371892663034785,
   });
   const [markers, setMarkers] = useState([]);
   const [routeCoordinates, setRouteCoordinates] = useState([]);
@@ -52,8 +48,20 @@ export default function MapScreen() {
 
     initializeLocation();
   }, []);
-  
-  
+
+  useEffect(() => {
+    if (marker) {
+      setMarkers([marker]);
+      setSelectedMarker(marker);
+      mapRef.current.animateToRegion({
+        latitude: marker.coordinate.latitude,
+        longitude: marker.coordinate.longitude,
+        latitudeDelta: 0.02,
+        longitudeDelta: 0.02,
+      });
+    }
+  }, [marker]);
+
   const handleMapPress = async (event) => {
     const newMarker = {
       id: new Date().getTime(),
@@ -61,39 +69,10 @@ export default function MapScreen() {
         latitude: event.nativeEvent.coordinate.latitude,
         longitude: event.nativeEvent.coordinate.longitude,
       },
-      
     };
     console.log('Sending Marker to Parent:', newMarker);
     setMarkers([newMarker]);
     setSelectedMarker(newMarker);
-
-    try {
-      const response = await axios.post(
-        `https://api.openrouteservice.org/v2/directions/driving-car`,
-        {
-          coordinates: [
-            [location.longitude, location.latitude],
-            [newMarker.coordinate.longitude, newMarker.coordinate.latitude],
-          ],
-        },
-        {
-          headers: {
-            'Authorization': {OPEN_ROUTE_SERVICE_API_KEY},
-          },
-        }
-      );
-
-      if (response.data.features && response.data.features.length > 0) {
-        const routeCoords = response.data.features[0].geometry.coordinates;
-        setRouteCoordinates(routeCoords);
-      }
-      
-    } catch (error) {
-      console.info('Driving route not available. ');
-      
-      console.info('Trying an alternative mode.');
-      
-    }
 
     mapRef.current.animateToRegion({
       latitude: newMarker.coordinate.latitude,
@@ -119,46 +98,7 @@ export default function MapScreen() {
   };
 
   const handleMarkerPress = (markerId) => {
-    setSelectedMarker(markers.find(marker => marker.id === markerId));
-    setRouteCoordinates([]);
-  };
-
-  const handleSearch = async (text) => {
-    setSearchQuery(text);
-    try {
-      const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${text}&types=geocode&key={OPEN_ROUTE_SERVICE_API_KEY}`
-      );
-
-      if (response.data.predictions) {
-        setSearchResults(response.data.predictions);
-      }
-    } catch (error) {
-      console.error('Error searching for location:', error);
-    }
-  };
-
-  const handleResultPress = async (placeId) => {
-    try {
-      const response = await axios.get(
-        `https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key={OPEN_ROUTE_SERVICE_API_KEY}`
-      );
-
-      if (response.data.result) {
-        const result = response.data.result;
-        const newDestination = {
-          latitude: result.geometry.location.lat,
-          longitude: result.geometry.location.lng,
-        };
-
-        setDestination(newDestination);
-        setRouteCoordinates([]);
-        setSearchQuery(result.formatted_address);
-        setSearchResults([]);
-      }
-    } catch (error) {
-      console.error('Error getting place details:', error);
-    }
+    setSelectedMarker(markers.find((marker) => marker.id === markerId));
   };
 
   return (
@@ -173,40 +113,6 @@ export default function MapScreen() {
         handleMarkerPress={handleMarkerPress}
         handleGetDirections={handleGetDirections}
       />
-      <SearchBar
-        placeholder="Search for a location"
-        onChangeText={handleSearch}
-        value={searchQuery}
-      />
-      {searchResults.length > 0 && (
-        <View>
-          {searchResults.map((result) => (
-            <Text
-              key={result.place_id}
-              onPress={() => handleResultPress(result.place_id)}
-            >
-              {result.description}
-            </Text>
-          ))}
-        </View>
-      )}
-
-       {/* Hotels Button */}
-       <HotelsButton />
-
-        {/* Search results rendering */}
-        {searchResults.length > 0 && (
-          <View>
-            {searchResults.map((result) => (
-              <Text
-                key={result.place_id}
-                onPress={() => handleResultPress(result.place_id)}
-              >
-                {result.description}
-              </Text>
-            ))}
-          </View>
-        )}
     </View>
   );
 }

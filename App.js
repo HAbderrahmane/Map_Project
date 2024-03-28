@@ -12,7 +12,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer style={{ flex: 1, backgroundColor: 'transparent'}}>
       <Stack.Navigator screenOptions={{headerShown: false}}>
         <Stack.Screen name="OnBoardScreen" component={OnBoardScreen} />
         <Stack.Screen name="HomeScreen" component={HomeScreen} />

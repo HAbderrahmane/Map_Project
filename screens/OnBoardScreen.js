@@ -14,7 +14,7 @@ const OnBoardScreen = ({navigation}) => {
       <StatusBar translucent backgroundColor="rgba(0,0,0,0)" />
       <ImageBackground
         style={{flex: 1}}
-        source={require('../assets/onboardImage.jpg')}>
+        source={require('../assets/MarseillePic.jpg')}>
         <View style={style.details}>
           <Text style={{color: COLORS.white, fontSize: 35, fontWeight: 'bold'}}>
             Discover

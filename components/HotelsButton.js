@@ -7,8 +7,7 @@ const HotelsButton = () => {
   const navigation = useNavigation();
 
   const handleHotelsPress = () => {
-    // You can navigate to the Hotels screen or perform any other action here
-    navigation.navigate('Hotels'); // Assuming 'Hotels' is the name of your hotels screen
+    navigation.navigate('Hotels'); 
   };
 
   return (
